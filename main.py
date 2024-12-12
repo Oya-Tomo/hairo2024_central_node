@@ -5,7 +5,7 @@ from state import unpack_state
 
 
 PORT = 5000
-SERVER = "hairo.local"
+SERVER = "0.0.0.0"
 ADDR = (SERVER, PORT)
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
