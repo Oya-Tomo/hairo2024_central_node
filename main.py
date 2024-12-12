@@ -1,7 +1,15 @@
 import socket
 import pprint
 
+import pigpio
+
 from state import unpack_state, SystemState, FooterState, ArmState, CollectionState
+
+
+pi = pigpio.pi()
+if not pi.connected:
+    print("pigpio not connected!")
+    exit()
 
 
 PORT = 5000
@@ -11,6 +19,7 @@ ADDR = (SERVER, PORT)
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 server.listen()
+
 
 system_state: SystemState = SystemState(
     is_running=False,
