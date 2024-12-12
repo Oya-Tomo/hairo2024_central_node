@@ -73,5 +73,5 @@ def send_state(
     pi.i2c_write_byte_data(
         handle,
         COLLECTOR_ANGLE_BYTE,
-        int_to_uint8t(map_to_int8t(angle, -math.pi / 2, math.pi / 2)),
+        int_to_uint8t(map_to_int8t(angle, -math.pi / 4, math.pi / 4)),
     )
