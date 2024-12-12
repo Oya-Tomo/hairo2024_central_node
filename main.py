@@ -4,7 +4,7 @@ import pprint
 import pigpio
 
 from state import unpack_state, SystemState, FooterState, ArmState, CollectionState
-from nodes import left_footer
+from nodes import left_footer, right_footer, collection
 
 pi = pigpio.pi()
 if not pi.connected:
@@ -12,7 +12,9 @@ if not pi.connected:
     exit()
 
 
-footer_node_handle = left_footer.get_handle(pi)
+left_footer_node_handle = left_footer.get_handle(pi)
+right_footer_node_handle = right_footer.get_handle(pi)
+collection_node_handle = collection.get_handle(pi)
 
 
 PORT = 5000
@@ -71,14 +73,45 @@ try:
         except socket.timeout:
             print("timeout")
 
-        left_footer.send_state(
-            pi,
-            footer_node_handle,
-            system_state.is_running,
-            footer_state.left_speed,
-            footer_state.left_front_flipper,
-            footer_state.left_back_flipper,
-        )
+        try:
+            left_footer.send_state(
+                pi,
+                left_footer_node_handle,
+                system_state.is_running,
+                footer_state.left_speed,
+                footer_state.left_front_flipper,
+                footer_state.left_back_flipper,
+            )
+        except Exception as e:
+            print("left_footer disconnected")
+
+        try:
+            right_footer.send_state(
+                pi,
+                right_footer_node_handle,
+                system_state.is_running,
+                footer_state.right_speed,
+                footer_state.right_front_flipper,
+                footer_state.right_back_flipper,
+            )
+        except Exception as e:
+            print("right_footer disconnected")
+
+        try:
+            collection.send_state(
+                pi,
+                collection_node_handle,
+                system_state.is_running,
+                arm_state.base_angle,
+                arm_state.mid_angle,
+                arm_state.tip_angle,
+                arm_state.rotate,
+                arm_state.gripper_speed,
+                collection_state.speed,
+                collection_state.angle,
+            )
+        except Exception as e:
+            print("collection disconnected")
 
 
 except KeyboardInterrupt as e:
@@ -89,4 +122,4 @@ finally:
     server.close()
     print("Server closed")
 
-    left_footer.close_handle(pi, footer_node_handle)
+    left_footer.close_handle(pi, left_footer_node_handle)
