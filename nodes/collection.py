@@ -4,7 +4,7 @@ import pigpio
 
 from utils import map_to_int8t, int_to_uint8t
 
-COLLECTION_I2C_ADDR = 0x10
+COLLECTION_I2C_ADDR = 0x30
 
 IS_RUNNING_BYTE = 0x00
 
