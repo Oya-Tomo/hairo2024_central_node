@@ -4,12 +4,15 @@ import pprint
 import pigpio
 
 from state import unpack_state, SystemState, FooterState, ArmState, CollectionState
-
+from nodes import left_footer
 
 pi = pigpio.pi()
 if not pi.connected:
     print("pigpio not connected!")
     exit()
+
+
+footer_node_handle = left_footer.get_handle(pi)
 
 
 PORT = 5000
@@ -68,6 +71,15 @@ try:
         except socket.timeout:
             print("timeout")
 
+        left_footer.send_state(
+            pi,
+            footer_node_handle,
+            system_state.is_running,
+            footer_state.left_speed,
+            footer_state.left_front_flipper,
+            footer_state.left_back_flipper,
+        )
+
 
 except KeyboardInterrupt as e:
     print("Finished!")
@@ -75,4 +87,6 @@ except KeyboardInterrupt as e:
 finally:
     server.shutdown(socket.SHUT_RDWR)
     server.close()
-    print("Server closed!")
+    print("Server closed")
+
+    left_footer.close_handle(pi, footer_node_handle)
