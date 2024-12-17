@@ -1,0 +1,16 @@
+[Unit]
+Description=Central Node - Hairo 2024
+Documentation=https://github.com/Oya-Tomo/hairo2024_central_node
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/hairo/Application/hairo2024_central_node
+ExecStartPre=sudo /var/run/pigpio.pid
+ExecStartPre=sudo pigpiod
+ExecStart=/home/hairo/python-env/bin/python3 main.py
+User=hairo
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

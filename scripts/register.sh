@@ -1,0 +1,1 @@
+sudo cp ./scripts/central_node.service /etc/systemd/system/
