@@ -10,6 +10,8 @@ pi = pigpio.pi()
 if not pi.connected:
     print("pigpio not connected!")
     exit()
+else:
+    print("pigpio connected!")
 
 
 left_footer_node_handle = left_footer.get_handle(pi)
