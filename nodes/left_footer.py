@@ -30,7 +30,6 @@ def send_state(
     front_angle: float,
     back_angle: float,
 ):
-    print(handle)
     pi.i2c_write_byte_data(handle, IS_RUNNING_BYTE, int(is_running))
     pi.i2c_write_byte_data(
         handle, SPEED_BYTE, int_to_uint8t(map_to_int8t(speed, -1.0, 1.0))
