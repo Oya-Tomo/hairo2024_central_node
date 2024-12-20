@@ -14,11 +14,6 @@ else:
     print("pigpio connected!")
 
 
-left_footer_node_handle = left_footer.get_handle(pi)
-right_footer_node_handle = right_footer.get_handle(pi)
-collection_node_handle = collection.get_handle(pi)
-
-
 PORT = 5000
 SERVER = "0.0.0.0"
 ADDR = (SERVER, PORT)
@@ -78,7 +73,6 @@ try:
         try:
             left_footer.send_state(
                 pi,
-                left_footer_node_handle,
                 system_state.is_running,
                 footer_state.left_speed,
                 footer_state.left_front_flipper,
@@ -90,7 +84,6 @@ try:
         try:
             right_footer.send_state(
                 pi,
-                right_footer_node_handle,
                 system_state.is_running,
                 footer_state.right_speed,
                 footer_state.right_front_flipper,
@@ -102,7 +95,6 @@ try:
         try:
             collection.send_state(
                 pi,
-                collection_node_handle,
                 system_state.is_running,
                 arm_state.base_angle,
                 arm_state.mid_angle,
@@ -124,4 +116,6 @@ finally:
     server.close()
     print("Server closed")
 
-    left_footer.close_handle(pi, left_footer_node_handle)
+    left_footer.close_handle(pi)
+    right_footer.close_handle(pi)
+    collection.close_handle(pi)
